@@ -3,6 +3,7 @@ import mediapipe
 import pyautogui
 capture_hands = mediapipe.solutions.hands.Hands()
 drawing_option = mediapipe.solutions.drawing_utils
+screen_width, screen_height = pyautogui.size()
 camera = cv2.VideoCapture(0)
 while True:
     _,image = camera.read()
@@ -20,7 +21,10 @@ while True:
                 current_pixel1 = int(lm.x * image_width)
                 current_pixel2 = int(lm.y * image_height)
                 if id == 8:
+                    mouse_x = int(screen_width / image_width * current_pixel1 )
+                    mouse_y = int(screen_height / image_height * current_pixel2 )
                     cv2.circle(image,(current_pixel1,current_pixel2),10,(0,255,255))
+                    pyautogui.moveTo(mouse_x,mouse_y)
                 if id == 4:
                     cv2.circle(image,(current_pixel1,current_pixel2),10,(0,255,255))
 
