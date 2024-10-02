@@ -7,12 +7,16 @@ screen_width, screen_height = pyautogui.size()
 camera = cv2.VideoCapture(0)
 index_finger1 = index_finger2 = thumb_tip1 = thumb_tip2 = 0
 
+if not camera.isOpened():
+    print("Error: Camera could not be opened.")
+    exit()
+
 while True:
     ret,image = camera.read()
     if not ret or image is None:
         print("Error, could not read image from the camera.")
         break
-    
+
 while True:
     _,image = camera.read()
     image_height, image_width, _= image.shape
