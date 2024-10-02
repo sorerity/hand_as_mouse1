@@ -21,6 +21,9 @@ while True:
                 current_pixel2 = int(lm.y * image_height)
                 if id == 8:
                     cv2.circle(image,(current_pixel1,current_pixel2),10,(0,255,255))
+                if id == 4:
+                    cv2.circle(image,(current_pixel1,current_pixel2),10,(0,255,255))
+
 
     cv2.imshow("Hand Movement Video Capture",image)
     key = cv2.waitKey(100)
