@@ -25,10 +25,19 @@ while True:
                     mouse_y = int(screen_height / image_height * current_pixel2 )
                     cv2.circle(image,(current_pixel1,current_pixel2),10,(0,255,255))
                     pyautogui.moveTo(mouse_x,mouse_y)
+                    index_finger1 = current_pixel1
+                    index_finger2 = current_pixel2
                 if id == 4:
+                    thumb_tip1 = current_pixel1
+                    thumb_tip2 = current_pixel2
                     cv2.circle(image,(current_pixel1,current_pixel2),10,(0,255,255))
 
+        distance = ((thumb_tip1 - index_finger1) ** 2 + (thumb_tip2 - index_finger2) ** 2) ** 0.5
+        print(distance)
 
+        if(distance<40):
+            pyautogui.click()
+    
     cv2.imshow("Hand Movement Video Capture",image)
     key = cv2.waitKey(100)
     if key == 27:
