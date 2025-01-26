@@ -51,6 +51,7 @@ while True:
         if(distance<40):
             pyautogui.click()
     
+    image = cv2.resize(image, (1920, 1080))
     cv2.imshow("Hand Movement Video Capture",image)
     key = cv2.waitKey(100)
     if key == 27:
