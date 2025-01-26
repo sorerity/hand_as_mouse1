@@ -12,7 +12,10 @@ if not camera.isOpened():
     print("Error: Camera could not be opened.")
     exit()
 
-def calculate_hand_center(hand_landmarks, image_width, image_height):
+def calculate_hand_center(hand_landmarks_list, image_width, image_height):
+    hand_center_x = sum([landmark.x for landmark in hand_landmarks_list]) / len(hand_landmarks_list)
+    hand_center_y = sum([landmark.x for landmark in hand_landmarks_list]) / len(hand_landmarks_list)
+    return hand_center_x, hand_center_y
 
 while True:
     ret,image = camera.read()
@@ -27,7 +30,10 @@ while True:
     rgb_image = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
     output_hands = capture_hands.process(rgb_image)
     all_hands = output_hands.multi_hand_landmarks
- 
+
+    hand_center_x = sum([landmark.x for landmark in hand_landmarks_list]) / len(hand_landmark_list)
+    hand_center_y = sum([landmark.x for landmark in hand_landmark_list]) / len(hand_landmark_list)
+
     if all_hands:
         for hand in all_hands:
             drawing_option.draw_landmarks(image,hand)
