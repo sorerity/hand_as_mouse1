@@ -12,6 +12,8 @@ if not camera.isOpened():
     print("Error: Camera could not be opened.")
     exit()
 
+def calculate_hand_center(hand_landmarks, image_width, image_height):
+
 while True:
     ret,image = camera.read()
     if not ret or image is None:
@@ -25,11 +27,12 @@ while True:
     rgb_image = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
     output_hands = capture_hands.process(rgb_image)
     all_hands = output_hands.multi_hand_landmarks
-
+ 
     if all_hands:
         for hand in all_hands:
             drawing_option.draw_landmarks(image,hand)
             one_hand_landmarks = hand.landmark
+
             for id, lm in enumerate(one_hand_landmarks):
                 current_pixel1 = int(lm.x * image_width)
                 current_pixel2 = int(lm.y * image_height)
@@ -51,7 +54,7 @@ while True:
         if(distance<40):
             pyautogui.click()
     
-    image = cv2.resize(image, (1920, 1080))
+    image = cv2.resize(image, (1280, 720))
     cv2.imshow("Hand Movement Video Capture",image)
     key = cv2.waitKey(100)
     if key == 27:
