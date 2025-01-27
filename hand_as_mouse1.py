@@ -8,7 +8,7 @@ screen_width, screen_height = pyautogui.size()
 
 camera = cv2.VideoCapture(0)
 
-finger_resting_positions = {'middle': None, 'index': None, 'ring': None, 'thumb_finger': None}
+finger_resting_positions = {'middle': None, 'index': None, 'ring': None, 'thumb': None}
 key_press_states = {'W': False, 'A': False, 'D': False, 'Space': False}
 
 index_finger1 = index_finger2 = thumb_tip1 = thumb_tip2 = 0
@@ -48,11 +48,12 @@ while True:
             hand_label = output_hands.multi_handedness[index].classification[0].label
 
             if hand_label == "Left":
+
                 finger_positions = {
-                    'middle_finger': int(one_hand_landmarks[12].y * image_height),
-                    'index_finger': int(one_hand_landmarks[8].y * image_height),
-                    'ring_finger': int(one_hand_landmarks[16].y * image_height),
-                    'thumb_finger': int(one_hand_landmarks[4].y * image_height),
+                    'middle': int(one_hand_landmarks[12].y * image_height),
+                    'index': int(one_hand_landmarks[8].y * image_height),
+                    'ring': int(one_hand_landmarks[16].y * image_height),
+                    'thumb': int(one_hand_landmarks[4].y * image_height),
                 }
 
                 for finger, position in finger_positions.items():
@@ -94,24 +95,27 @@ while True:
                         key_press_states['Space'] = False
                         print("Space released")
                 
+                elif hand_label == "Right":
+                    index_finger1 = int(one_hand_landmarks[8].x * image_width)
+                    index_finger2 = int(one_hand_landmarks[8].y * image_height)
+                    thumb_tip1 = int(one_hand_landmarks[4].x * image_width)
+                    thumb_tip2 = int(one_hand_landmarks[4].y * image_height)
+                
                 
             hand_center_x, hand_center_y = calculate_hand_center(one_hand_landmarks, image_width, image_height)
             cv2.circle(image, (hand_center_x, hand_center_y), 10, (255, 0, 0), -1)
+
+            pyautogui.moveTo(hand_center_x * screen_width / image_width, hand_center_y * screen_height / image_height)
 
             for id, lm in enumerate(one_hand_landmarks):
                 current_pixel1 = int(lm.x * image_width)
                 current_pixel2 = int(lm.y * image_height)
                 if id == 8:
-                    mouse_x = int(screen_width / image_width * current_pixel1 )
-                    mouse_y = int(screen_height / image_height * current_pixel2 )
-                    cv2.circle(image,(current_pixel1,current_pixel2),10,(0,255,255), -1)
-                    pyautogui.moveTo(hand_center_x * screen_width / image_width, hand_center_y * screen_height / image_height)
                     index_finger1 = current_pixel1
                     index_finger2 = current_pixel2
                 if id == 4:
                     thumb_tip1 = current_pixel1
                     thumb_tip2 = current_pixel2
-                    cv2.circle(image,(current_pixel1,current_pixel2),10,(0,255,255))
 
         distance = ((thumb_tip1 - index_finger1) ** 2 + (thumb_tip2 - index_finger2) ** 2) ** 0.5
         print(distance)
