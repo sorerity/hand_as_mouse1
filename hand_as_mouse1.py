@@ -8,6 +8,9 @@ screen_width, screen_height = pyautogui.size()
 
 camera = cv2.VideoCapture(0)
 
+resting_positions = {'middle': None, 'index': None, 'ring': None}
+key_states = {'W': False, 'A': False, 'D': False}
+
 index_finger1 = index_finger2 = thumb_tip1 = thumb_tip2 = 0
 
 if not camera.isOpened():
