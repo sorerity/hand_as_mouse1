@@ -1,11 +1,13 @@
 import cv2
 import mediapipe
 import pyautogui
+
 capture_hands = mediapipe.solutions.hands.Hands()
 drawing_option = mediapipe.solutions.drawing_utils
 screen_width, screen_height = pyautogui.size()
 
 camera = cv2.VideoCapture(0)
+
 index_finger1 = index_finger2 = thumb_tip1 = thumb_tip2 = 0
 
 if not camera.isOpened():
@@ -15,6 +17,10 @@ if not camera.isOpened():
 def calculate_hand_center(hand_landmarks_list, image_width, image_height):
     hand_center_x = sum([landmark.x for landmark in hand_landmarks_list]) / len(hand_landmarks_list)
     hand_center_y = sum([landmark.x for landmark in hand_landmarks_list]) / len(hand_landmarks_list)
+    
+    center_pixel_x = int(hand_center_x * image_width)
+    center_pixel_y = int(hand_center_y * image_height)
+
     return hand_center_x, hand_center_y
 
 while True:
