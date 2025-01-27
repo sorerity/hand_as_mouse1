@@ -16,8 +16,8 @@ if not camera.isOpened():
 
 def calculate_hand_center(hand_landmarks_list, image_width, image_height):
     hand_center_x = sum([landmark.x for landmark in hand_landmarks_list]) / len(hand_landmarks_list)
-    hand_center_y = sum([landmark.x for landmark in hand_landmarks_list]) / len(hand_landmarks_list)
-    
+    hand_center_y = sum([landmark.y for landmark in hand_landmarks_list]) / len(hand_landmarks_list)
+
     center_pixel_x = int(hand_center_x * image_width)
     center_pixel_y = int(hand_center_y * image_height)
 
@@ -37,8 +37,8 @@ while True:
     output_hands = capture_hands.process(rgb_image)
     all_hands = output_hands.multi_hand_landmarks
 
-    hand_center_x = sum([landmark.x for landmark in hand_landmarks_list]) / len(hand_landmark_list)
-    hand_center_y = sum([landmark.x for landmark in hand_landmark_list]) / len(hand_landmark_list)
+    hand_center_x, hand_center_y = calculate_hand_center(one_hand_landmarks, image_width, image_height)
+    cv2.circle(image, (hand_center_x, hand_center_y), 10, (255, 0, 0), -1)
 
     if all_hands:
         for hand in all_hands:
@@ -63,7 +63,7 @@ while True:
         distance = ((thumb_tip1 - index_finger1) ** 2 + (thumb_tip2 - index_finger2) ** 2) ** 0.5
         print(distance)
 
-        if(distance<40):
+        if distance < 40:
             pyautogui.click()
     
     image = cv2.resize(image, (1280, 720))
