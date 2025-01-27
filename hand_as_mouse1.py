@@ -54,6 +54,16 @@ while True:
                     'ring_finger': int(one_hand_landmarks[16].y * image_height),
                     'thumb_finger': int(one_hand_landmarks[4].y * image_height),
                 }
+
+                for finger, position in finger_positions.items():
+                    if finger_resting_positions[finger] is None:
+                        finger_resting_positions[finger] = position
+
+                if position > finger_resting_positions[finger] + 20:
+                    if finger == 'middle' and not key_press_states['W']:
+                        pyautogui.keyDown('w')
+                        key_press_states['W'] = True
+                        print("W pressed")
                 
             hand_center_x, hand_center_y = calculate_hand_center(one_hand_landmarks, image_width, image_height)
             cv2.circle(image, (hand_center_x, hand_center_y), 10, (255, 0, 0), -1)
