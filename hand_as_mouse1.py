@@ -73,7 +73,7 @@ while True:
                             key_press_states['A'] = True
                             print("A pressed")
                         elif finger == 'thumb' and not key_press_states['Space']:
-                            pyautogui.keyDown('space')  # Corrected handling for Space
+                            pyautogui.keyDown('space')
                             key_press_states['Space'] = True
                             print("Space pressed")
                     elif position <= finger_resting_positions[finger] + 10:
@@ -90,7 +90,7 @@ while True:
                             key_press_states['A'] = False
                             print("A released")
                         elif finger == 'thumb' and key_press_states['Space']:
-                            pyautogui.keyUp('space')  # Corrected handling for Space
+                            pyautogui.keyUp('space')
                             key_press_states['Space'] = False
                             print("Space released")
                 
@@ -113,7 +113,7 @@ while True:
     image = cv2.resize(image, (1280, 720))
     cv2.imshow("Hand Movement Video Capture", image)
     key = cv2.waitKey(100)
-    if key == 27:  # ESC key to exit
+    if key == 27:
         break
 
 camera.release()
