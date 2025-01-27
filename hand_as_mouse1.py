@@ -21,7 +21,7 @@ def calculate_hand_center(hand_landmarks_list, image_width, image_height):
     center_pixel_x = int(hand_center_x * image_width)
     center_pixel_y = int(hand_center_y * image_height)
 
-    return hand_center_x, hand_center_y
+    return center_pixel_x, center_pixel_y
 
 while True:
     ret,image = camera.read()
@@ -31,19 +31,19 @@ while True:
 
     image = cv2.resize(image, (640, 480))
 
-    image_height, image_width, _= image.shape
-    image = cv2.flip(image,1)
-    rgb_image = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
+    image_height, image_width, _ = image.shape
+    image = cv2.flip(image, 1)
+    rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     output_hands = capture_hands.process(rgb_image)
     all_hands = output_hands.multi_hand_landmarks
 
-    hand_center_x, hand_center_y = calculate_hand_center(one_hand_landmarks, image_width, image_height)
-    cv2.circle(image, (hand_center_x, hand_center_y), 10, (255, 0, 0), -1)
-
     if all_hands:
         for hand in all_hands:
-            drawing_option.draw_landmarks(image,hand)
+            drawing_option.draw_landmarks(image, hand)
             one_hand_landmarks = hand.landmark
+
+            hand_center_x, hand_center_y = calculate_hand_center(one_hand_landmarks, image_width, image_height)
+            cv2.circle(image, (hand_center_x, hand_center_y), 10, (255, 0, 0), -1)
 
             for id, lm in enumerate(one_hand_landmarks):
                 current_pixel1 = int(lm.x * image_width)
@@ -51,8 +51,8 @@ while True:
                 if id == 8:
                     mouse_x = int(screen_width / image_width * current_pixel1 )
                     mouse_y = int(screen_height / image_height * current_pixel2 )
-                    cv2.circle(image,(current_pixel1,current_pixel2),10,(0,255,255))
-                    pyautogui.moveTo(mouse_x,mouse_y)
+                    cv2.circle(image,(current_pixel1,current_pixel2),10,(0,255,255), -1)
+                    pyautogui.moveTo(hand_center_x * screen_width / image_width, hand_center_y * screen_height / image_height)
                     index_finger1 = current_pixel1
                     index_finger2 = current_pixel2
                 if id == 4:
