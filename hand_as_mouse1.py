@@ -64,6 +64,36 @@ while True:
                         pyautogui.keyDown('w')
                         key_press_states['W'] = True
                         print("W pressed")
+                    elif finger == 'index' and not key_press_states['D']:
+                        pyautogui.keyDown('d')
+                        key_press_states['D'] = True
+                        print("D pressed")
+                    elif finger == 'ring' and not key_press_states['A']:
+                        pyautogui.keyDown('a')
+                        key_press_states['A'] = True
+                        print("A pressed")
+                    elif finger == 'thumb' and not key_press_states['Space']:
+                        pyautogui.keyDown('space')
+                        key_press_states['Space'] = True
+                        print("Space pressed")
+                elif position <= finger_resting_positions[finger] + 10:
+                    if finger == 'middle' and not key_press_states['W']:
+                        pyautogui.keyUp('w')
+                        key_press_states['W'] = False
+                        print("W released")
+                    elif finger == 'index' and not key_press_states['D']:
+                        pyautogui.keyUp('d')
+                        key_press_states['D'] = False
+                        print("D released")
+                    elif finger == 'ring' and not key_press_states['A']:
+                        pyautogui.keyUp('a')
+                        key_press_states['A'] = False
+                        print("A released")
+                    elif finger == 'thumb' and not key_press_states['Space']:
+                        pyautogui.keyUp('space')
+                        key_press_states['Space'] = False
+                        print("Space released")
+                
                 
             hand_center_x, hand_center_y = calculate_hand_center(one_hand_landmarks, image_width, image_height)
             cv2.circle(image, (hand_center_x, hand_center_y), 10, (255, 0, 0), -1)
