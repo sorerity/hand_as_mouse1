@@ -8,8 +8,8 @@ screen_width, screen_height = pyautogui.size()
 
 camera = cv2.VideoCapture(0)
 
-resting_positions = {'middle': None, 'index': None, 'ring': None}
-key_states = {'W': False, 'A': False, 'D': False}
+finger_resting_positions = {'middle': None, 'index': None, 'ring': None}
+key_press_states = {'W': False, 'A': False, 'D': False, 'Space': False}
 
 index_finger1 = index_finger2 = thumb_tip1 = thumb_tip2 = 0
 
@@ -41,9 +41,11 @@ while True:
     all_hands = output_hands.multi_hand_landmarks
 
     if all_hands:
-        for hand in all_hands:
+        for index, hand in enumerate(all_hands):
             drawing_option.draw_landmarks(image, hand)
             one_hand_landmarks = hand.landmark
+
+            hand_label = output_hands.multi_handedness[index].classification[0].label
 
             hand_center_x, hand_center_y = calculate_hand_center(one_hand_landmarks, image_width, image_height)
             cv2.circle(image, (hand_center_x, hand_center_y), 10, (255, 0, 0), -1)
