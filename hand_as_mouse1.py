@@ -49,8 +49,12 @@ while True:
 
             if hand_label == "Left":
                 finger_positions = {
-                    'middle finger': int(hand_landmarks[12].y * image_height),
-
+                    'middle_finger': int(one_hand_landmarks[12].y * image_height),
+                    'index_finger': int(one_hand_landmarks[8].y * image_height),
+                    'ring_finger': int(one_hand_landmarks[16].y * image_height),
+                    'thumb_finger': int(one_hand_landmarks[4].y * image_height),
+                }
+                
             hand_center_x, hand_center_y = calculate_hand_center(one_hand_landmarks, image_width, image_height)
             cv2.circle(image, (hand_center_x, hand_center_y), 10, (255, 0, 0), -1)
 
